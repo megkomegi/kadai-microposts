@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @microposts = @user.microposts.order(id: :desc).page(params[:page])
     counts(@user)
-    @likes = Favorite.where(micropost_id: params[:micropost_id])
+  
   end
 
   def new
@@ -39,11 +39,13 @@ class UsersController < ApplicationController
     counts(@user)
   end
   
-  def favorite
-    @micropost = current_user.microposts.build
-    @feed_microposts = current_user.favorite_microposts.paginate(page: params[:page])
-    render template: 'about/index'
+  def likes
+     @user = User.find(params[:id])
+     @likes = @user.likes.page(params[:page])
+     counts(@user)
   end
+  
+
   
   private
 

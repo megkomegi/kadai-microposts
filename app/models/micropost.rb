@@ -1,11 +1,11 @@
 class Micropost < ApplicationRecord
   belongs_to :user
   validates :content, presence: true, length: { maximum: 255 }
-  has_many :favorites
-  has_many :likes, through: :favorites, source: :user
+  has_many :favorites, dependent: :destroy
+  has_many :favoriting_users, through: :favorites, source: :user
   
-  def like_user(user_id)
-   likes.find_by(user_id: user_id)
+  def favorited_by?(user)
+    favorites.where(user_id: user.id).exists?
   end
   
 end
